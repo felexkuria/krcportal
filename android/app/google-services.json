@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1045815003541",
+    "project_id": "krcportal-c3123",
+    "storage_bucket": "krcportal-c3123.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045815003541:android:c2f6a0eacda459ec980e9c",
+        "android_client_info": {
+          "package_name": "com.example.krcportal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA20rMPRRZZSQ7DZgFyieP_wygLDd_9xWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045815003541:android:ed3e38b11aadeebf980e9c",
+        "android_client_info": {
+          "package_name": "com.krc.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA20rMPRRZZSQ7DZgFyieP_wygLDd_9xWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045815003541:android:ec3129e168f323e1980e9c",
+        "android_client_info": {
+          "package_name": "com.krcportal.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA20rMPRRZZSQ7DZgFyieP_wygLDd_9xWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

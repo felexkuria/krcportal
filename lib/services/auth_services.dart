@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../model/user.dart';
+
 class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,10 +23,15 @@ class AuthService {
       // Update last login time in Firestore
       await _updateLastLoginTime(userCredential.user);
 
+      // Fetch the user document from Firestore
+      DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      AppUser appUser = AppUser.fromFirestore(doc);
+
       return AuthResult(
-          success: true,
-          user: userCredential.user,
-          message: 'Login successful');
+          success: true, user: appUser, message: 'Login successful');
     } on FirebaseAuthException catch (e) {
       return AuthResult(
           success: false, message: _getErrorMessage(e), errorCode: e.code);
@@ -52,10 +59,15 @@ class AuthService {
       await _createUserDocument(
           uid: userCredential.user!.uid, email: email, name: name);
 
+      // Fetch the created user document
+      DocumentSnapshot doc = await _firestore
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .get();
+      AppUser appUser = AppUser.fromFirestore(doc);
+
       return AuthResult(
-          success: true,
-          user: userCredential.user,
-          message: 'Registration successful');
+          success: true, user: appUser, message: 'Registration successful');
     } on FirebaseAuthException catch (e) {
       return AuthResult(
           success: false, message: _getErrorMessage(e), errorCode: e.code);
@@ -73,6 +85,15 @@ class AuthService {
       await _firestore.collection('users').doc(user.uid).update({
         'lastLoginTime': FieldValue.serverTimestamp(),
       });
+    }
+  }
+
+// Reset password method (sends reset email)
+  static Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(_getErrorMessage(e)); // Propagate error to the UI
     }
   }
 
@@ -113,7 +134,7 @@ class AuthService {
 // Authentication result class for handling login/register responses
 class AuthResult {
   final bool success;
-  final User? user;
+  final AppUser? user;
   final String message;
   final String? errorCode;
 

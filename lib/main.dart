@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 
 // Import your screen and service files
 import './services/auth_services.dart';
+import 'screens/dashboard.dart';
+import 'screens/forgot_password.dart';
 import 'screens/home_screen.dart';
 import './screens/login.dart';
 
@@ -82,6 +84,8 @@ class KenyaRailwaysPortalApp extends StatelessWidget {
       routes: {
         '/home': (context) => HomeScreen(),
         '/login': (context) => const LoginScreen(),
+        '/forgotpassword': (context) => ForgotPasswordScreen(),
+        '/dashboard': (context) => DashboardScreen(),
       },
 
       // Disable debug banner

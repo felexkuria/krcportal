@@ -17,6 +17,65 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false;
   String? _errorMessage;
+  // Forgot Password logic
+  void _forgotPassword() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController emailController = TextEditingController();
+
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: 'Enter your email',
+                  hintText: 'example@example.com',
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                String email = emailController.text.trim();
+                if (email.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Please enter an email address')),
+                  );
+                  return;
+                }
+
+                try {
+                  await AuthService.resetPassword(email);
+                  Navigator.pop(context);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Password reset email sent!')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error: ${e.toString()}')),
+                  );
+                }
+              },
+              child: const Text('Send Reset Email'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _login() async {
     if (!_formKey.currentState!.validate()) return;
@@ -31,9 +90,11 @@ class _LoginScreenState extends State<LoginScreen> {
       password: _passwordController.text.trim(),
     );
 
-    setState(() {
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
 
     if (result.success) {
       Navigator.of(context)
@@ -83,6 +144,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: _login,
                           child: const Text('Login'),
                         ),
+                  const SizedBox(height: 16.0),
+                  TextButton(
+                    onPressed: _forgotPassword,
+                    child: const Text('Forgot Password?',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 240, 241, 241))),
+                  ),
                   const SizedBox(height: 20),
                   TextButton(
                     onPressed: () => Navigator.of(context).push(
